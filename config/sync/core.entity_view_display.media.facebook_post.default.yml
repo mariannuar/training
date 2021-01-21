@@ -1,0 +1,26 @@
+uuid: ee16759b-eba3-466a-9a46-3be0fb8a5815
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.media.facebook_post.field_media_facebook
+    - media.type.facebook_post
+  module:
+    - media_entity_facebook
+id: media.facebook_post.default
+targetEntityType: media
+bundle: facebook_post
+mode: default
+content:
+  field_media_facebook:
+    label: hidden
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    type: facebook_embed
+    region: content
+hidden:
+  created: true
+  name: true
+  thumbnail: true
+  uid: true

@@ -1,0 +1,19 @@
+uuid: 3e3d5fd3-3717-4222-aca3-884d90137890
+langcode: en
+status: false
+dependencies: {  }
+id: dev
+label: Dev
+description: ''
+folder: sites/default/config/dev
+module:
+  devel: 0
+  stage_file_proxy: 0
+  views_ui: 0
+theme: {  }
+blacklist: {  }
+graylist:
+  - core.extension
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 0

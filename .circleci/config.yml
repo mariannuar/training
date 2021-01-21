@@ -1,0 +1,227 @@
+version: 2
+# Environment variables required by the project:
+# GIT_EMAIL
+# GIT_NAME
+# PLATFORMSH_CLI_TOKEN
+# PLATFORM_GIT_REPO
+# PLATFORM_PROJECT_ID
+# SITE_UUID
+# SITE_URL
+# LHCI_GITHUB_APP_TOKEN
+
+jobs:
+  build:
+    docker:
+      - image: kporras07/docker-drupal-nginx:php-7.3.x-backstop
+      - image: mariadb:5.5
+        environment:
+          MYSQL_DATABASE: drupal
+          MYSQL_ROOT_PASSWORD: drupal
+    working_directory: /var/www/local_site
+    steps:
+      - run: apt-get update -y && apt-get install python -y
+      - run: echo 127.0.0.1 local_site.local | tee -a /etc/hosts
+      - add_ssh_keys:
+      - checkout
+      - restore_cache:
+          keys:
+            - npm-cache-{{ checksum "package.json" }}
+            - composer-cache-{{ checksum "composer.lock" }}
+      - run: npm install
+      - save_cache:
+          key: npm-cache-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+      - run:
+          name: Install Composer
+          command: |
+            php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+            php -r "copy('https://composer.github.io/installer.sig', 'composer-setup.sig');" && \
+            php -r "if (hash_file('SHA384', 'composer-setup.php') === trim(file_get_contents('composer-setup.sig'))) { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
+            php composer-setup.php && \
+            php -r "unlink('composer-setup.php');"
+            mv composer.phar /usr/bin/composer
+      - run:
+          name: Install Platform CLI
+          command: |
+            curl -sS https://platform.sh/cli/installer | php
+      - run:
+          name: Configure Nginx
+          command: |
+            cp ./.circleci/local_site /etc/nginx/sites-available/default
+      - run:
+          name: Build site from scratch
+          command: |
+            cp ./.circleci/settings.secret.php ./settings/
+            composer install
+            chmod 777 -R ./web/sites/default/files
+            /usr/bin/env PHP_OPTIONS="-d sendmail_path=`which true`"
+            echo "Installing the site..."
+            ./vendor/bin/drush si bloom -y
+            if [ -f /var/www/local_site/config/sync/core.extension.yml ]; then
+              echo "Setting the site uuid..."
+              ./vendor/bin/drush config:set system.site uuid $SITE_UUID -y
+              echo "Importing config..."
+              ./vendor/bin/drush cim -y
+              ./vendor/bin/drush cim -y
+            fi
+            if [ -f ./themes/custom/CUSTOMTHEME/package.json ]; then
+              cd ./themes/custom/CUSTOMTHEME
+              if [ ! -d ./node_modules ]; then npm install; fi
+              npm run build
+              cd /var/www/local_site
+            fi
+            echo "Cleaning cache..."
+            ./vendor/bin/drush cr
+      - run:
+          name: Build site from DB
+          command: |
+            git config --global user.email $GIT_EMAIL
+            git config --global user.name $GIT_NAME
+            echo 'Host *' >> /root/.ssh/config
+            echo '   StrictHostKeyChecking no' >> /root/.ssh/config
+            /root/.platformsh/bin/platform db:dump --gzip --file=database.sql.gz -p $PLATFORM_PROJECT_ID -e master
+            echo "Drop Database..."
+            ./vendor/bin/drush sql:drop -y
+            echo "Import database..."
+            gunzip -c database.sql.gz | ./vendor/bin/drush sqlc
+            echo "Update database..."
+            ./vendor/bin/drush updb --no-cache-clear -y
+            echo "Cleaning cache..."
+            ./vendor/bin/drush cr
+            echo "Importing config..."
+            ./vendor/bin/drush cim -y
+            ./vendor/bin/drush cim -y
+            echo "Sanitizing database..."
+            ./vendor/bin/drush sqlsan --sanitize-password=admin -y
+            echo "Cleaning cache..."
+            ./vendor/bin/drush cr
+      - run:
+          name: Coding Standards Linters
+          command: |
+            ./node_modules/.bin/gulp phplint
+            ./node_modules/.bin/gulp drupalcs
+            ./node_modules/.bin/gulp eslint
+      - run:
+          name: Lighthouse
+          command: |
+            /etc/init.d/nginx start > nginx.log &
+            /etc/init.d/php7.3-fpm start > php7.3-fpm.log &
+            ./node_modules/.bin/lhci autorun --collect.url=http://local_site.local
+
+  deploy-dev:
+    docker:
+      - image: kporras07/docker-drupal-nginx:php-7.3.x-backstop
+    working_directory: /var/www/local_site
+    steps:
+      - checkout
+      - run:
+          name: Install Platform CLI
+          command: |
+            curl -sS https://platform.sh/cli/installer | php
+      - add_ssh_keys:
+      - run:
+          name: Deploy commands
+          no_output_timeout: 20m
+          command: |
+            git config --global user.email $GIT_EMAIL
+            git config --global user.name $GIT_NAME
+            echo 'Host *' >> /root/.ssh/config
+            echo '   StrictHostKeyChecking no' >> /root/.ssh/config
+            ./scripts/deploy.sh dev "Auto deploy triggered from master branch"
+            /root/.platformsh/bin/platform drush cc drush -p $PLATFORM_PROJECT_ID -e dev
+            /root/.platformsh/bin/platform drush si -p $PLATFORM_PROJECT_ID -e dev -- bloom --account-pass=admin -y
+            /root/.platformsh/bin/platform drush config:set -p $PLATFORM_PROJECT_ID -e dev -- "system.site" uuid "$SITE_UUID" -y
+            /root/.platformsh/bin/platform drush cr -p $PLATFORM_PROJECT_ID -e dev
+            /root/.platformsh/bin/platform drush cim -p $PLATFORM_PROJECT_ID -e dev -- -y
+            /root/.platformsh/bin/platform drush cr -p $PLATFORM_PROJECT_ID -e dev
+
+  deploy-staging:
+    docker:
+      - image: kporras07/docker-drupal-nginx:php-7.3.x
+    working_directory: /var/www/local_site
+    steps:
+      - run:
+          name: Install Platform CLI
+          command: |
+            curl -sS https://platform.sh/cli/installer | php
+      - add_ssh_keys:
+      - run:
+          name: Deploy commands
+          command: |
+            git config --global user.email $GIT_EMAIL
+            git config --global user.name $GIT_NAME
+            echo 'Host *' >> /root/.ssh/config
+            echo '   StrictHostKeyChecking no' >> /root/.ssh/config
+            /root/.platformsh/bin/platform drush cc drush -p $PLATFORM_PROJECT_ID -e staging
+            /root/.platformsh/bin/platform drush cr -p $PLATFORM_PROJECT_ID -e staging
+            /root/.platformsh/bin/platform merge -p $PLATFORM_PROJECT_ID -e dev -y || true
+            /root/.platformsh/bin/platform sync data -p $PLATFORM_PROJECT_ID -e staging -y || true
+            /root/.platformsh/bin/platform drush sqlsan -p $PLATFORM_PROJECT_ID -e staging -- --sanitize-password=admin -y
+            /root/.platformsh/bin/platform drush updb -p $PLATFORM_PROJECT_ID -e staging -- --no-cache-clear -y
+            /root/.platformsh/bin/platform drush cr -p $PLATFORM_PROJECT_ID -e staging
+            /root/.platformsh/bin/platform drush cim -p $PLATFORM_PROJECT_ID -e staging -- -y
+            /root/.platformsh/bin/platform drush cr -p $PLATFORM_PROJECT_ID -e staging
+
+  deploy-live:
+    docker:
+      - image: kporras07/docker-drupal-nginx:php-7.3.x
+    working_directory: /var/www/local_site
+    steps:
+      - run:
+          name: Install Platform CLI
+          command: |
+            curl -sS https://platform.sh/cli/installer | php
+      - add_ssh_keys:
+      - run:
+          name: Deploy commands
+          command: |
+            git config --global user.email $GIT_EMAIL
+            git config --global user.name $GIT_NAME
+            echo 'Host *' >> /root/.ssh/config
+            echo '   StrictHostKeyChecking no' >> /root/.ssh/config
+            /root/.platformsh/bin/platform backup:create -p $PLATFORM_PROJECT_ID -e master -y
+            /root/.platformsh/bin/platform drush cc drush -p $PLATFORM_PROJECT_ID -e master
+            /root/.platformsh/bin/platform drush cr -p $PLATFORM_PROJECT_ID -e master
+            /root/.platformsh/bin/platform merge -p $PLATFORM_PROJECT_ID -e staging -y || true
+            /root/.platformsh/bin/platform drush updb -p $PLATFORM_PROJECT_ID -e master -- --no-cache-clear -y
+            /root/.platformsh/bin/platform drush cr -p $PLATFORM_PROJECT_ID -e master
+            /root/.platformsh/bin/platform drush cim -p $PLATFORM_PROJECT_ID -e master -- -y
+            /root/.platformsh/bin/platform drush cr -p $PLATFORM_PROJECT_ID -e master
+
+  lighthouse-on-live:
+    docker:
+      - image: circleci/node:10.16-browsers
+    working_directory: ~/local_site
+    steps:
+      - checkout
+      - run: sudo npm install -g @lhci/cli@0.4.x
+      - run: lhci autorun --collect.url=$SITE_URL
+
+workflows:
+  version: 2
+  build-deploys:
+    jobs:
+      - build
+      - deploy-dev:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+      - deploy-staging:
+          requires:
+            - deploy-dev
+      - deploy-live-hold:
+          type: approval
+          requires:
+            - deploy-staging
+      - deploy-live:
+          requires:
+            - deploy-live-hold
+      - lighthouse-on-live:
+          requires:
+            - deploy-live
+          filters:
+            branches:
+              only: master
