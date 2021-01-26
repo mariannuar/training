@@ -12,7 +12,7 @@ id: application_job_form
 title: 'Application job form'
 description: ''
 category: ''
-elements: "fullname:\n  '#type': textfield\n  '#title': Fullname\n  '#required': true\naddress:\n  '#type': textfield\n  '#title': Address\n  '#required': true\nphone:\n  '#type': tel\n  '#title': Phone\n  '#required': true\nemail:\n  '#type': email\n  '#title': Email\n  '#required': true\nlinkedin:\n  '#type': url\n  '#title': LinkedIn\ngithub:\n  '#type': url\n  '#title': Github\nbio:\n  '#type': textarea\n  '#title': Bio\n  '#required': true\ncv:\n  '#type': webform_document_file\n  '#title': CV\n  '#required': true\ncover_letter:\n  '#type': webform_document_file\n  '#title': 'Cover letter'\n  '#required': true"
+elements: "personal_information:\n  '#type': webform_wizard_page\n  '#title': 'Personal information'\n  fullname:\n    '#type': textfield\n    '#title': Fullname\n    '#required': true\n  address:\n    '#type': textfield\n    '#title': Address\n    '#required': true\n  phone:\n    '#type': tel\n    '#title': Phone\n    '#required': true\n  email:\n    '#type': email\n    '#title': Email\n    '#required': true\n  linkedin:\n    '#type': url\n    '#title': LinkedIn\n  github:\n    '#type': url\n    '#title': Github\nwork_experience:\n  '#type': webform_wizard_page\n  '#title': 'Work experience'\n  bio:\n    '#type': textarea\n    '#title': Bio\n    '#required': true\napplication_information:\n  '#type': webform_wizard_page\n  '#title': 'Application information'\n  cv:\n    '#type': webform_document_file\n    '#title': CV\n    '#required': true\n  cover_letter:\n    '#type': webform_document_file\n    '#title': 'Cover letter'\n    '#required': true"
 css: ''
 javascript: ''
 settings:
@@ -25,7 +25,7 @@ settings:
   page_submit_path: ''
   page_confirm_path: ''
   page_theme_name: ''
-  form_title: both
+  form_title: source_entity_webform
   form_submit_once: false
   form_exception_message: ''
   form_open_message: ''
@@ -80,7 +80,7 @@ settings:
   autofill_message: ''
   autofill_excluded_elements: {  }
   wizard_progress_bar: true
-  wizard_progress_pages: false
+  wizard_progress_pages: true
   wizard_progress_percentage: false
   wizard_progress_link: false
   wizard_progress_states: false
@@ -94,7 +94,7 @@ settings:
   wizard_track: ''
   wizard_prev_button_label: ''
   wizard_next_button_label: ''
-  wizard_toggle: false
+  wizard_toggle: true
   wizard_toggle_show_label: ''
   wizard_toggle_hide_label: ''
   preview: 0
