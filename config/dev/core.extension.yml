@@ -29,6 +29,7 @@ module:
   image_style_quality: 0
   inline_form_errors: 0
   link: 0
+  maillog: 0
   media: 0
   media_entity_facebook: 0
   media_entity_instagram: 0
@@ -62,6 +63,8 @@ module:
   update: 0
   user: 0
   views_ui: 0
+  webform: 0
+  webform_ui: 0
   xmlsitemap_engines: 0
   pathauto: 1
   xmlsitemap: 1
