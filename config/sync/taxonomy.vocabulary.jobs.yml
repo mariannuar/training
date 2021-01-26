@@ -1,0 +1,8 @@
+uuid: dd5b4b45-973f-4706-bc4d-d4a7a8cbe301
+langcode: en
+status: true
+dependencies: {  }
+name: Jobs
+vid: jobs
+description: ''
+weight: 0
