@@ -61,6 +61,7 @@
         "drupal/stage_file_proxy": "^1.0",
         "drupal/svg_image": "^1.14",
         "drupal/twig_tweak": "^2.6",
+        "drupal/webform": "^6.0",
         "drupal/xmlsitemap": "^1.0",
         "drush/drush": "^10.3",
         "kint-php/kint": "^3.3",
