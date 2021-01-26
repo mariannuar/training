@@ -55,6 +55,7 @@ module:
   retina_images: 0
   seckit: 0
   shs: 0
+  smtp: 0
   stage_file_proxy: 0
   svg_image: 0
   system: 0
