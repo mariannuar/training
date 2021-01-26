@@ -113,8 +113,8 @@ settings:
   draft_pending_single_message: ''
   draft_pending_multiple_message: ''
   confirmation_type: page
-  confirmation_title: ''
-  confirmation_message: ''
+  confirmation_title: 'Your application job form has been sumitted.'
+  confirmation_message: "Thanks&nbsp;[webform_submission:values:fullname].<br />\r\n<br />\r\nWe will contact you in the next few days."
   confirmation_url: ''
   confirmation_attributes: {  }
   confirmation_back: true
