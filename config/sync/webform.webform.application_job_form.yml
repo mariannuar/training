@@ -1,4 +1,4 @@
-uuid: db3c8129-c63d-445b-80d7-30f0d2f73e2e
+uuid: c715b00f-860e-4731-a18e-1f2b053b712d
 langcode: en
 status: open
 dependencies: {  }
@@ -8,8 +8,8 @@ weight: 0
 uid: 1
 template: false
 archive: false
-id: aplication_job_form
-title: 'Aplication job form'
+id: application_job_form
+title: 'Application job form'
 description: ''
 category: ''
 elements: null
