@@ -1,0 +1,20 @@
+uuid: b384ebc4-dd26-411c-950a-cfbc84d0476f
+langcode: en
+status: true
+dependencies:
+  theme:
+    - iceacream
+_core:
+  default_config_hash: H37-jE2HB2YeN3bSD1tBswI-IBfHYdzsz7dgjJdQSfU
+id: iceacream_local_actions
+theme: iceacream
+region: content
+weight: -10
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

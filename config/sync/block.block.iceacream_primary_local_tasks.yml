@@ -1,0 +1,22 @@
+uuid: e754034d-75ce-4c05-abd2-82b00233b114
+langcode: en
+status: true
+dependencies:
+  theme:
+    - iceacream
+_core:
+  default_config_hash: HgiQOwPGLJ_r4k7TuYppsHxu_jRQddAK3SJCGeLDXwg
+id: iceacream_primary_local_tasks
+theme: iceacream
+region: header
+weight: -3
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: 'Primary tabs'
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: false
+visibility: {  }
