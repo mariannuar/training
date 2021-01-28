@@ -9,7 +9,7 @@ _core:
 id: iceacream_page_title
 theme: iceacream
 region: header
-weight: 1
+weight: -3
 provider: null
 plugin: page_title_block
 settings:
