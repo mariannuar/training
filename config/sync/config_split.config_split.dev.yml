@@ -14,6 +14,8 @@ theme: {  }
 blacklist: {  }
 graylist:
   - core.extension
+  - smtp.settings
+  - system.mail
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 0
