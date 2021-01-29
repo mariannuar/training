@@ -1,9 +1,9 @@
-name: retro
+name: Reboot
 type: theme
-description: An amazing Retro theme
+description: A demo theme created based on Bootstrap
 package: Other
 core: 8.x
-base theme: classy
+base theme: bartik
 
 regions:
   header: 'Header'
