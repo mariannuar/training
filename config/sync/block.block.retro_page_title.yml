@@ -1,0 +1,20 @@
+uuid: 20865630-580b-457c-9d02-19531ad8a27c
+langcode: en
+status: true
+dependencies:
+  theme:
+    - retro
+_core:
+  default_config_hash: MmM0Ecphc-NSAEZgCOTC7dmGMZ_hpbCka4hpYtih-Zo
+id: retro_page_title
+theme: retro
+region: header
+weight: -30
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility: {  }
