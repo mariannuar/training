@@ -1,0 +1,22 @@
+uuid: 376a5b7b-e54f-4ec5-92ac-0497e7ffc4ff
+langcode: en
+status: true
+dependencies:
+  theme:
+    - retro
+_core:
+  default_config_hash: KnFmSlDx_hdFL1muRuGmncZp2wZWjyEQKVdwg0VDHKc
+id: retro_secondary_local_tasks
+theme: retro
+region: header
+weight: 0
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: 'Secondary tabs'
+  provider: core
+  label_display: '0'
+  primary: false
+  secondary: true
+visibility: {  }

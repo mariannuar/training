@@ -1,8 +1,9 @@
-name: 'Ice-Cream'
+name: IceCream
 type: theme
-description: 'A great theme for warm summer days'
+description: A demo theme created based on Bootstrap
+package: Other
 core: 8.x
-base theme: classy
+base theme: bartik
 
 regions:
   header: 'Header'
@@ -14,9 +15,13 @@ regions:
   featured_top: 'Featured top'
   breadcrumb: 'Breadcrumb'
   content: 'Content'
-  sidebar_first: 'Sidebar first'
-  sidedebar_second: 'Sidebar second'
+  sidebar_first: 'Left sidebar'
+  sidebar_second: 'Right sidebar'
   footer_first: 'Footer first'
   footer_second: 'Footer second'
+
+libraries:
+  - icecream/bootstrap
+  - icecream/global
 
 
