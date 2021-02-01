@@ -79,6 +79,7 @@ set classes = [
   node.isSticky() ? 'node--sticky',
   not node.isPublished() ? 'node--unpublished',
   view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+  current_user_is_owner ? 'node--current-user-is-owner',
 ]
 %}
 {{ attach_library('classy/node') }}
