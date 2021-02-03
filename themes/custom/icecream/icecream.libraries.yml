@@ -1,4 +1,4 @@
-bootstrap:
+ic:
   css:
     theme:
       css/bootstrap.min.css: {}

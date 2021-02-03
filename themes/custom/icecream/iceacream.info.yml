@@ -3,7 +3,7 @@ type: theme
 description: A demo theme created based on Bootstrap
 package: Other
 core: 8.x
-base theme: bartik
+base theme: classy
 
 regions:
   regions:
@@ -22,7 +22,7 @@ regions:
   footer_second: 'Footer second'
 
 libraries:
-  - icecream/bootstrap
+  - icecream/icecream
   - icecream/global
 
 
