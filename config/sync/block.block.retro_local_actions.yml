@@ -1,0 +1,20 @@
+uuid: 23d50cd6-8b2f-4701-8dfb-4e2d4d88437a
+langcode: en
+status: true
+dependencies:
+  theme:
+    - retro
+_core:
+  default_config_hash: H37-jE2HB2YeN3bSD1tBswI-IBfHYdzsz7dgjJdQSfU
+id: retro_local_actions
+theme: retro
+region: content
+weight: -10
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

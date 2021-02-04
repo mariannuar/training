@@ -1,0 +1,22 @@
+uuid: fca1e53f-fa0c-4b83-ae36-adc643f1bd8b
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - gleaming
+_core:
+  default_config_hash: KHQIJ7Vfl25lTjzIc7qIvnuistt-Mw2O0kG4jCofmkI
+id: gleaming_messages
+theme: gleaming
+region: highlighted
+weight: 0
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: 'Status messages'
+  provider: system
+  label_display: '0'
+visibility: {  }

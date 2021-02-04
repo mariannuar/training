@@ -1,0 +1,22 @@
+uuid: b30f15b4-1636-4b3c-8d37-e01bea3cce46
+langcode: en
+status: true
+dependencies:
+  theme:
+    - gleaming
+_core:
+  default_config_hash: KnFmSlDx_hdFL1muRuGmncZp2wZWjyEQKVdwg0VDHKc
+id: gleaming_secondary_local_tasks
+theme: gleaming
+region: header
+weight: 0
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: 'Secondary tabs'
+  provider: core
+  label_display: '0'
+  primary: false
+  secondary: true
+visibility: {  }

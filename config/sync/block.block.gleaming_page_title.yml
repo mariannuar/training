@@ -1,0 +1,20 @@
+uuid: fdae6358-f07a-4771-add7-cf9a7956d23a
+langcode: en
+status: true
+dependencies:
+  theme:
+    - gleaming
+_core:
+  default_config_hash: MmM0Ecphc-NSAEZgCOTC7dmGMZ_hpbCka4hpYtih-Zo
+id: gleaming_page_title
+theme: gleaming
+region: header
+weight: -30
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility: {  }

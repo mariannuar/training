@@ -1,0 +1,20 @@
+uuid: 15b15068-9e8a-49f4-85c9-7aa087c9bdd2
+langcode: en
+status: true
+dependencies:
+  theme:
+    - gleaming
+_core:
+  default_config_hash: H37-jE2HB2YeN3bSD1tBswI-IBfHYdzsz7dgjJdQSfU
+id: gleaming_local_actions
+theme: gleaming
+region: content
+weight: -10
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

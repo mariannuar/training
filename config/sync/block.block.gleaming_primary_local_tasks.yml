@@ -1,0 +1,22 @@
+uuid: 0305c22a-c883-4cae-aea0-6aa810fdb0a5
+langcode: en
+status: true
+dependencies:
+  theme:
+    - gleaming
+_core:
+  default_config_hash: HgiQOwPGLJ_r4k7TuYppsHxu_jRQddAK3SJCGeLDXwg
+id: gleaming_primary_local_tasks
+theme: gleaming
+region: header
+weight: 0
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: 'Primary tabs'
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: false
+visibility: {  }
