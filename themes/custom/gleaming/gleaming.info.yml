@@ -5,3 +5,9 @@ core: 8.x
 libraries:
   - gleaming/global-css
   - gleaming/global-js
+
+regions:
+  content: 'Main Content'
+  header: 'Header'
+  footer: 'Footer'
+  sidebar: 'Sidebar'
